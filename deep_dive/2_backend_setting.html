@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Backend Setting &mdash; Ivy 1.0 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="icon" type="image/png" href="https://github.com/unifyai/unifyai.github.io/blob/master/img/externally_linked/ivy_logo_only.png?raw=true">
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/custom.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -56,14 +57,19 @@
 <li class="toctree-l2"><a class="reference internal" href="6_data_types.html">Data Types</a></li>
 <li class="toctree-l2"><a class="reference internal" href="7_devices.html">Devices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="8_inplace_updates.html">Inplace Updates</a></li>
-<li class="toctree-l2"><a class="reference internal" href="9_function_arguments.html">Function Arguments</a></li>
-<li class="toctree-l2"><a class="reference internal" href="10_docstrings.html">Docstrings</a></li>
-<li class="toctree-l2"><a class="reference internal" href="11_docstring_examples.html">Docstring Examples</a></li>
-<li class="toctree-l2"><a class="reference internal" href="12_array_api_tests.html">Array API Tests</a></li>
-<li class="toctree-l2"><a class="reference internal" href="13_ivy_tests.html">Ivy Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="9_formatting.html">Formatting</a></li>
+<li class="toctree-l2"><a class="reference internal" href="10_function_arguments.html">Function Arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="11_submodule_helpers.html">Submodule Helper Functions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="12_docstrings.html">Docstrings</a></li>
+<li class="toctree-l2"><a class="reference internal" href="13_docstring_examples.html">Docstring Examples</a></li>
+<li class="toctree-l2"><a class="reference internal" href="14_array_api_tests.html">Array API Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="15_ivy_tests.html">Ivy Tests</a></li>
+<li class="toctree-l2"><a class="reference internal" href="16_ivy_frontends.html">Ivy Frontends</a></li>
+<li class="toctree-l2"><a class="reference internal" href="17_ivy_frontends_tests.html">Ivy Frontend Tests</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="../faq.html">FAQ</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../glossary.html">Glossary</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Functions</span></p>
 <ul>
@@ -76,7 +82,6 @@
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/elementwise.html">Elementwise</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/general.html">General</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/gradients.html">Gradients</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../functional/ivy/image.html">Image</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/layers.html">Layers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/linear_algebra.html">Linear algebra</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/losses.html">Losses</a></li>
@@ -91,15 +96,20 @@
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/statistical.html">Statistical</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../functional/ivy/utility.html">Utility</a></li>
 </ul>
-<p class="caption" role="heading"><span class="caption-text">Classes</span></p>
+<p class="caption" role="heading"><span class="caption-text">Data Classes</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../stateful/activations.html">Activations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../stateful/converters.html">Converters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_classes/container.html">Container</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../data_classes/array.html">Array</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Framework Classes</span></p>
+<ul>
 <li class="toctree-l1"><a class="reference internal" href="../stateful/initializers.html">Initializers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../stateful/layers.html">Layers</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../stateful/module.html">Module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../stateful/norms.html">Norms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful/converters.html">Converters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../stateful/optimizers.html">Optimizers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful/module.html">Module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful/layers.html">Layers</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful/norms.html">Norms</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../stateful/activations.html">Activations</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../stateful/sequential.html">Sequential</a></li>
 </ul>
 <p class="caption" role="heading"><span class="caption-text">Docs</span></p>
@@ -143,8 +153,8 @@
              
   <section id="backend-setting">
 <h1>Backend Setting<a class="headerlink" href="#backend-setting" title="Permalink to this heading"></a></h1>
-<p>The backend framework is set by calling <code class="code docutils literal notranslate"><span class="pre">ivy.set_backend(backend_name)</span></code>. When calling <a class="reference external" href="https://github.com/unifyai/ivy/blob/1eb841cdf595e2bb269fce084bd50fb79ce01a69/ivy/backend_handler.py#L154">this function</a>,
-the following steps are performed:</p>
+<p>The backend framework can either be set by calling <code class="code docutils literal notranslate"><span class="pre">ivy.set_backend(backend_name)</span></code> or it can inferred from the arguments. For the latter, a global variable <a class="reference external" href="https://github.com/unifyai/ivy/blob/master/ivy/backend_handler.py#L16">implicit_backend</a> is located in the file which is initialized as <code class="code docutils literal notranslate"><span class="pre">numpy</span></code>, and is always used to infer the backend in cases where: (a) no backend has been set using the <code class="code docutils literal notranslate"><span class="pre">set_backend</span></code> function and (b) the backend cannot be inferred from the inputs. If the framework can be inferred from the inputs, then this is always used, and the <a class="reference external" href="https://github.com/unifyai/ivy/blob/master/ivy/backend_handler.py#L16">implicit_backend</a> is overwritten with the framework inferred. <code class="code docutils literal notranslate"><span class="pre">numpy</span></code> will always be the default backend unless it is explicitly set or is inferred.</p>
+<p>When calling <a class="reference external" href="https://github.com/unifyai/ivy/blob/1eb841cdf595e2bb269fce084bd50fb79ce01a69/ivy/backend_handler.py#L154">this function</a> for setting the backend, the following steps are performed:</p>
 <ol class="arabic simple">
 <li><p>store a global copy of the original <code class="code docutils literal notranslate"><span class="pre">ivy.__dict__</span></code> to <code class="code docutils literal notranslate"><span class="pre">ivy_original_dict</span></code>, if this is not already stored.</p></li>
 <li><p><a class="reference external" href="https://github.com/unifyai/ivy/blob/1eb841cdf595e2bb269fce084bd50fb79ce01a69/ivy/backend_handler.py#L184">import the backend module</a>, for example <code class="code docutils literal notranslate"><span class="pre">ivy.functional.backends.torch</span></code>, if the backend has been passed in as a string. All functions in this unmodified backend module are <em>primary</em> functions, because only primary functions are stored in <code class="code docutils literal notranslate"><span class="pre">ivy.functional.backends.backend_name</span></code>. This backend module does not include any <em>compositional</em> functions.</p></li>
@@ -156,12 +166,36 @@ function from <code class="code docutils literal notranslate"><span class="pre">
 every backend function implementation. This is explained in more detail in the next section:
 <a class="reference internal" href="3_function_wrapping.html#function-wrapping"><span class="std std-ref">Function Wrapping</span></a>.</p></li>
 </ol>
+<p>It’s helpful to look at an example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">x</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span> <span class="mf">3.</span><span class="p">]])</span>
+<span class="n">ivy</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
+<span class="o">&lt;</span><span class="n">module</span> <span class="s1">&#39;ivy.functional.backends.numpy&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/opt/project/ivy/functional/backends/numpy/__init__.py&#39;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">y</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mf">3.</span><span class="p">]),</span> <span class="n">torch</span><span class="o">.</span><span class="n">Tensor</span><span class="p">([</span><span class="mf">4.</span><span class="p">]))</span>
+<span class="n">ivy</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
+<span class="o">&lt;</span><span class="n">module</span> <span class="s1">&#39;ivy.functional.backends.torch&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/opt/project/ivy/functional/backends/torch/__init__.py&#39;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">ivy</span><span class="o">.</span><span class="n">set_backend</span><span class="p">(</span><span class="s1">&#39;jax&#39;</span><span class="p">)</span>
+<span class="n">z</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">matmul</span><span class="p">(</span><span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">2.</span><span class="p">,</span><span class="mf">3.</span><span class="p">]]),</span> <span class="n">jax</span><span class="o">.</span><span class="n">numpy</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mf">5.</span><span class="p">],[</span><span class="mf">6.</span><span class="p">]]))</span>
+<span class="n">ivy</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
+<span class="o">&lt;</span><span class="n">module</span> <span class="s1">&#39;ivy.functional.backends.jax&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/opt/project/ivy/functional/backends/jax/__init__.py&#39;</span><span class="o">&gt;</span>
+<span class="n">ivy</span><span class="o">.</span><span class="n">unset_backend</span><span class="p">()</span>
+<span class="n">ivy</span><span class="o">.</span><span class="n">get_backend</span><span class="p">()</span>
+<span class="o">&lt;</span><span class="n">module</span> <span class="s1">&#39;ivy.functional.backends.torch&#39;</span> <span class="kn">from</span> <span class="s1">&#39;/opt/project/ivy/functional/backends/torch/__init__.py&#39;</span><span class="o">&gt;</span>
+</pre></div>
+</div>
+<p>In the last example above, the moment any backend is set, it will be used over the <a class="reference external" href="https://github.com/unifyai/ivy/blob/master/ivy/backend_handler.py#L16">implicit_backend</a>. However when the backend is unset using the <code class="code docutils literal notranslate"><span class="pre">ivy.unset_backend</span></code>, the <a class="reference external" href="https://github.com/unifyai/ivy/blob/master/ivy/backend_handler.py#L16">implicit_backend</a> will be used as a fallback, which will assume the backend from the last run. While the <a class="reference external" href="https://github.com/unifyai/ivy/blob/master/ivy/backend_handler.py#L16">implicit_backend</a> functionality gives more freedom to the user , the recommended way of doing things would be set the backend explicitly.</p>
 <p><strong>Round Up</strong></p>
 <p>This should have hopefully given you a good feel for how the backend framework is set.</p>
 <p>If you’re ever unsure of how best to proceed,
 please feel free to engage with the <a class="reference external" href="https://github.com/unifyai/ivy/discussions/1313">backend setting discussion</a>,
 or reach out on <a class="reference external" href="https://discord.gg/ZVQdvbzNQJ">discord</a> in the <a class="reference external" href="https://discord.com/channels/799879767196958751/982737886963187772">backend setting channel</a>!</p>
-</section>
+<p><strong>Video</strong></p>
+<iframe width="420" height="315"
+src="https://www.youtube.com/embed/ROt5E8aHgww" class="video">
+</iframe></section>
 
 
            </div>
@@ -174,7 +208,7 @@ or reach out on <a class="reference external" href="https://discord.gg/ZVQdvbzNQ
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, Ivy Team.</p>
+    <p>&#169; Copyright 2020-2022, Ivy Team.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
