@@ -3,18 +3,17 @@ from hypothesis import given, strategies as st
 
 # local
 import ivy_tests.test_ivy.helpers as helpers
-import ivy.functional.backends.numpy as ivy_np
 from ivy_tests.test_ivy.helpers import handle_cmd_line_args
 
 
 # delete
 @st.composite
 def _delete_helper(draw):
-    shape = draw(helpers.get_shape())
+    shape = draw(helpers.get_shape(min_num_dims=1))
 
     dtype_and_arr = draw(
         helpers.dtype_and_values(
-            available_dtypes=ivy_np.valid_dtypes,
+            available_dtypes=helpers.get_dtypes("valid"),
             shape=shape,
         )
     )
