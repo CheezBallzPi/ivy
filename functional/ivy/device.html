@@ -81,12 +81,13 @@
 <li class="toctree-l2"><a class="reference internal" href="device/split_factor.html">split_factor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device/set_split_factor.html">set_split_factor</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device/split_func_call.html">split_func_call</a></li>
-<li class="toctree-l2"><a class="reference internal" href="device/function_unsupported_devices.html">function_unsupported_devices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device/function_supported_devices.html">function_supported_devices</a></li>
+<li class="toctree-l2"><a class="reference internal" href="device/function_unsupported_devices.html">function_unsupported_devices</a></li>
 <li class="toctree-l2"><a class="reference internal" href="device/Profiler.html">Profiler</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="elementwise.html">Elementwise</a></li>
+<li class="toctree-l1"><a class="reference internal" href="extensions.html">Extensions</a></li>
 <li class="toctree-l1"><a class="reference internal" href="general.html">General</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gradients.html">Gradients</a></li>
 <li class="toctree-l1"><a class="reference internal" href="layers.html">Layers</a></li>
@@ -443,11 +444,14 @@ otherwise the cpu is returned.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ivy.functional.ivy.device.function_supported_devices">
-<span class="sig-prename descclassname">ivy.</span></span><span class="sig-name descname"><span class="pre">function_supported_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/functional/ivy/device.html#function_supported_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.functional.ivy.device.function_supported_devices" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname">ivy.</span></span><span class="sig-name descname"><span class="pre">function_supported_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/functional/ivy/device.html#function_supported_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.functional.ivy.device.function_supported_devices" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the supported devices of the current backend’s function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – The function to check for the supported device attribute</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – The function to check for the supported device attribute</p></li>
+<li><p><strong>recurse</strong> – Whether to recurse into used ivy functions. Default is True.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></p>
@@ -460,11 +464,14 @@ otherwise the cpu is returned.</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ivy.functional.ivy.device.function_unsupported_devices">
-<span class="sig-prename descclassname">ivy.</span></span><span class="sig-name descname"><span class="pre">function_unsupported_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">/</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/functional/ivy/device.html#function_unsupported_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.functional.ivy.device.function_unsupported_devices" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname">ivy.</span></span><span class="sig-name descname"><span class="pre">function_unsupported_devices</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">recurse</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../_modules/ivy/functional/ivy/device.html#function_unsupported_devices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ivy.functional.ivy.device.function_unsupported_devices" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the unsupported devices of the current backend’s function.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – The function to check for the unsupported device attribute</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code>) – The function to check for the unsupported device attribute</p></li>
+<li><p><strong>recurse</strong> – Whether to recurse into used ivy functions. Default is True.</p></li>
+</ul>
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p><code class="xref py py-data docutils literal notranslate"><span class="pre">Tuple</span></code></p>
@@ -1009,8 +1016,8 @@ RAM is returned.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>device</strong> (<code class="xref py py-data docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Device</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">NativeDevice</span></code>]) – The device string to convert to native device handle.</p></li>
-<li><p><strong>process_specific</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether the check the memory used by this python process alone. Default is (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-False.</p></li>
+<li><p><strong>process_specific</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>) – Whether to check the memory used by this python process alone. Default is (default: <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+False. Currently is only supported for cpu.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1020,10 +1027,27 @@ False.</p></li>
 <dd class="field-odd"><p><em>ret</em> – The used memory on the device in GB.</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">used_mem_on_dev</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">process_specific</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">6.219563008</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">x</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">used_mem_on_dev</span><span class="p">(</span><span class="s2">&quot;cpu&quot;</span><span class="p">,</span> <span class="n">process_specific</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+<span class="go">0.902400346</span>
+</pre></div>
+</div>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">y</span> <span class="o">=</span> <span class="n">ivy</span><span class="o">.</span><span class="n">used_mem_on_dev</span><span class="p">(</span><span class="s2">&quot;gpu:0&quot;</span><span class="p">,</span> <span class="n">process_specific</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
+<span class="go">0.525205504</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <div class="toctree-wrapper compound">
 </div>
+<p>This should have hopefully given you an overview of the Device submodule,If you’re ever unsure of how best to proceed, please feel free to engage with the <a class="reference external" href="https://github.com/unifyai/ivy/discussions/2188">Device discussion</a>,or reach out on <a class="reference external" href="https://discord.gg/ZVQdvbzNQJ">discord</a> in the <a class="reference external" href="https://discord.com/channels/799879767196958751/1000043825085026394">Device channel</a>!</p>
 </section>
 
 
