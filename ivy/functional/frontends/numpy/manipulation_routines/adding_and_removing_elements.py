@@ -14,6 +14,8 @@ def delete(arr, obj, axis=None):
         start, stop, step = obj.indices(arr.shape[axis])
         xr = range(start, stop, step)
         num_to_remove = len(xr)
+        if num_to_remove == 0:
+            return arr
         if step < 0:
             step = -step
             start = xr[-1]
@@ -128,8 +130,8 @@ def insert(arr, obj, values, axis=None):
 def append(arr, values, axis=None):
     if not axis:
         axis = 0
-        arr = ivy.reshape(arr, (1,))
-        values = ivy.reshape(values, (1,))
+        arr.reshape((math.prod(arr.shape)))
+        values.reshape((math.prod(values.shape)))
     return ivy.concat(arr, values, axis=axis)
 
 

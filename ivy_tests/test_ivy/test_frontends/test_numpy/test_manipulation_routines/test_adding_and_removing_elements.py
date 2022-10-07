@@ -1,6 +1,10 @@
 import numpy as np
 from hypothesis import given, strategies as st
 
+from ivy_tests.test_ivy.test_functional.test_core.test_manipulation import (
+    _arrays_idx_n_dtypes,
+)
+
 # local
 import ivy_tests.test_ivy.helpers as helpers
 from ivy_tests.test_ivy.helpers import handle_cmd_line_args
@@ -40,37 +44,62 @@ def _delete_helper(draw):
                 st.integers(min_value=-axis_len, max_value=axis_len - 1),
             )
         )
-    return (dtype_and_arr, axis, obj)
+    if type(obj) is np.ndarray:
+        dtype_and_obj = ([obj.dtype], obj)
+    else:
+        dtype_and_obj = ([], obj)
+    return (dtype_and_arr, dtype_and_obj, axis)
 
 
 @handle_cmd_line_args
 @given(
-    dtype_and_arr_axis_obj=_delete_helper(),
+    dtype_and_inputs=_delete_helper(),
     num_positional_args=helpers.num_positional_args(
         fn_name="ivy.functional.frontends.numpy.delete"
     ),
 )
 def test_numpy_delete(
-    dtype_and_arr_axis_obj,
+    dtype_and_inputs,
     as_variable,
     num_positional_args,
     native_array,
-    fw,
 ):
-    (arr_dtype, arr), axis, obj = dtype_and_arr_axis_obj
-    input_dtypes = [arr_dtype]
+    (arr_dtype, arr), (obj_dtype, obj), axis = dtype_and_inputs
     if type(obj) == np.ndarray:
-        input_dtypes.append(obj.dtype)
+        arr_dtype.append(obj.dtype)
     helpers.test_frontend_function(
-        input_dtypes=input_dtypes,
+        input_dtypes=arr_dtype + obj_dtype,
         as_variable_flags=as_variable,
         with_out=False,
         num_positional_args=num_positional_args,
         native_array_flags=native_array,
-        fw=fw,
         frontend="numpy",
         fn_tree="delete",
-        arr=np.array(arr, dtype=arr_dtype),
+        arr=arr,
         obj=obj,
+        axis=axis,
+    )
+
+
+# append
+@handle_cmd_line_args
+@given(
+    dtype_and_inputs=_arrays_idx_n_dtypes(),
+    num_positional_args=helpers.num_positional_args(
+        fn_name="ivy.functional.frontends.numpy.append"
+    ),
+)
+def test_numpy_append(as_variable, num_positional_args, native_array, dtype_and_inputs):
+    arr_list, arr_dtype, axis = dtype_and_inputs
+    helpers.test_frontend_function(
+        input_dtypes=tuple(arr_dtype),
+        as_variable_flags=as_variable,
+        with_out=False,
+        num_positional_args=num_positional_args,
+        native_array_flags=native_array,
+        frontend="numpy",
+        fn_tree="append",
+        arr=arr_list[0],
+        values=arr_list[1],
         axis=axis,
     )
