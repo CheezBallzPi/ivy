@@ -469,7 +469,9 @@ Generally, we have made decisions so that Ivy is as stable and scalable as possi
 <p>With the design as currently presented, there would be a small performance hit every time we call an Ivy function by virtue of the added Python wrapping. One reason we created the graph compiler was to address this issue.</p>
 <p>The compiler takes in any Ivy function, backend function, or composition, and returns the computation graph using the backend functional API only. The dependency graph for this process looks like this:</p>
 <a class="reference internal image-reference" href="https://github.com/unifyai/unifyai.github.io/blob/master/img/externally_linked/design/compiler_dependency_graph.png?raw=true"><img alt="https://github.com/unifyai/unifyai.github.io/blob/master/img/externally_linked/design/compiler_dependency_graph.png?raw=true" class="align-center" src="https://github.com/unifyai/unifyai.github.io/blob/master/img/externally_linked/design/compiler_dependency_graph.png?raw=true" style="width: 75%;" /></a>
-<p>As an example, the following 3 pieces of code all compile to the exact same computation graph as shown:</p>
+<p>Let’s look at a few examples, and observe the compiled graph of the Ivy code against the native backend code.
+First, let’s set our desired backend as PyTorch. When we compile the three functions below, despite the fact that each
+has a different mix of Ivy and PyTorch code, they all compile to the same graph:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 33%" />
@@ -628,30 +630,7 @@ Generally, we have made decisions so that Ivy is as stable and scalable as possi
 </tbody>
 </table>
 <a class="reference internal image-reference" href="https://github.com/unifyai/unifyai.github.io/blob/master/img/externally_linked/design/compiled_graph_b.png?raw=true"><img alt="https://github.com/unifyai/unifyai.github.io/blob/master/img/externally_linked/design/compiled_graph_b.png?raw=true" class="align-center" src="https://github.com/unifyai/unifyai.github.io/blob/master/img/externally_linked/design/compiled_graph_b.png?raw=true" style="width: 75%;" /></a>
-<p>The graph compiler does not compile to C++, CUDA or any other lower level language. It simply traces the backend functional methods in the graph, stores this graph, and then efficiently traverses this graph at execution time, all in Python. Compiling to lower level languages (C++, CUDA, TorchScript etc.) is supported for most backend frameworks via <code class="xref py py-func docutils literal notranslate"><span class="pre">ivy.compile()</span></code>, which wraps backend-specific compilation code, for example:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ivy/functional/backends/tensorflow/compilation.py</span>
-<span class="nb">compile</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fn</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
-<span class="n">static_argnums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span>\
-    <span class="n">tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ivy/functional/backends/torch/compilation.py</span>
-<span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">static_argnums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="k">if</span> <span class="n">dynamic</span><span class="p">:</span>
-    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
-<span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">example_inputs</span><span class="p">)</span>
-</pre></div>
-</div>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ivy/functional/backends/jax/compilation.py</span>
-<span class="nb">compile</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fn</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
-            <span class="n">static_argnums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span>\
-<span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="n">static_argnums</span><span class="p">,</span>
-        <span class="n">static_argnames</span><span class="o">=</span><span class="n">static_argnames</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>Therefore, the backend code can always be run with maximal efficiency by compiling into an efficient low-level backend-specific computation graph.</p>
-<p>This compilation is not restricted to just PyTorch. For example, let’s take another example, but compile to Tensorflow, NumPy and JAX:</p>
+<p>This compilation is not restricted to just PyTorch. Let’s take another example, but compile to Tensorflow, NumPy and JAX:</p>
 <table class="docutils align-default">
 <colgroup>
 <col style="width: 100%" />
@@ -684,6 +663,29 @@ Generally, we have made decisions so that Ivy is as stable and scalable as possi
 <p>The example above further emphasizes that the graph compiler creates a computation graph consisting of backend functions, not Ivy functions.
 Specifically, the same Ivy code compiles to different graphs depending on the selected backend. However, when compiling native framework code, we are only able to compile a graph for that same framework.
 For example, we cannot take torch code and compile this into tensorflow code. However, we can transpile torch code into tensorflow code (see :ref:Ivy as a Transpiler for more details).</p>
+<p>The graph compiler does not compile to C++, CUDA or any other lower level language. It simply traces the backend functional methods in the graph, stores this graph, and then efficiently traverses this graph at execution time, all in Python. Compiling to lower level languages (C++, CUDA, TorchScript etc.) is supported for most backend frameworks via <code class="xref py py-func docutils literal notranslate"><span class="pre">ivy.compile()</span></code>, which wraps backend-specific compilation code, for example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ivy/functional/backends/tensorflow/compilation.py</span>
+<span class="nb">compile</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fn</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+<span class="n">static_argnums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span>\
+    <span class="n">tf</span><span class="o">.</span><span class="n">function</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ivy/functional/backends/torch/compilation.py</span>
+<span class="k">def</span> <span class="nf">compile</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">static_argnums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="k">if</span> <span class="n">dynamic</span><span class="p">:</span>
+    <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">script</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+<span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">jit</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">example_inputs</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1"># ivy/functional/backends/jax/compilation.py</span>
+<span class="nb">compile</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">fn</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">example_inputs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>\
+            <span class="n">static_argnums</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">static_argnames</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span>\
+<span class="n">jax</span><span class="o">.</span><span class="n">jit</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">static_argnums</span><span class="o">=</span><span class="n">static_argnums</span><span class="p">,</span>
+        <span class="n">static_argnames</span><span class="o">=</span><span class="n">static_argnames</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Therefore, the backend code can always be run with maximal efficiency by compiling into an efficient low-level backend-specific computation graph.</p>
 <p><strong>Round Up</strong></p>
 <p>Hopefully this has painted a clear picture of the fundamental building blocks underpinning the Ivy framework, being the backend functional APIs, Ivy functional API, backend handler and graph compiler 🙂</p>
 <p>Please reach out on <a class="reference external" href="https://discord.gg/ZVQdvbzNQJ">discord</a> if you have any questions!</p>
